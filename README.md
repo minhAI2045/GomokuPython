@@ -52,3 +52,54 @@ Parameters include `board`, `letter` and `move`. The variable `board` is a list 
 ```
 board[move] = letter
 ```
+The above code seems to change one of the elements in the list `board` to the value stored in the variable `letter`. However, since this code is inside a function, the `board` parameter will be omitted when the function returns. So the change to `board` will also be dropped when the function returns?
+
+Absolutely not, because lists have special properties when we pass them as arguments to functions. We are passing a reference to the list, not the list itself. We will learn about the difference between a list and a reference to a list.
+# Check if the player wins or not
+```
+def isWinner(bo, le):
+     #Return True if player wins
+     #Use bo instead of the full name board and le stands for letter
+     return ((bo[7] == le and bo[8] == le and bo[9] == le) or #One top row
+     (bo[4] == le and bo[5] == le and bo[6] == le) or #Middle row
+     (bo[1] == le and bo[2] == le and bo[3] == le) or #Last row
+     (bo[7] == le and bo[4] == le and bo[1] == le) or #Left column
+     (bo[8] == le and bo[5] == le and bo[2] == le) or #The middle column
+     (bo[9] == le and bo[6] == le and bo[3] == le) or #Right column
+     (bo[7] == le and bo[5] == le and bo[3] == le) or #Diagonal
+     (bo[9] == le and bo[5] == le and bo[1] == le)) #Diagonal
+```
+Tên `bo` và `le` là các từ viết tắt cho các tham số của `board` và `letter`. Hãy nhớ rằng, Python không quan tâm đến việc bạn đặt tên cho các biến của mình là gì.
+
+Có tám cách có thể để giành chiến thắng tại Tic Tac-Toe: bạn có thể có một hàng ngang ở các hàng trên cùng, giữa hoặc dưới cùng hoặc các hàng chéo.
+
+Mỗi dòng của điều kiện sẽ kiểm tra xem ba ô cho một dòng nhất định có bằng với ký tự được cung cấp hay không (kết hợp với toán tử `and`). Ta thực hiện kết hợp mỗi dòng bằng cách sử dụng toán tử `or` để kiểm tra tám cách khác nhau. Điều này có nghĩa là chỉ có một trong tám cách sẽ có giá trị là True để chúng ta có thể nói rằng người chơi sở hữu `letter` trong `le` là người chiến thắng.
+
+# Copy Board's data
+The `getBoardCopy()` function allows to make a copy of a list containing 10 specified strings representing the checkerboard.
+```
+def getBoardCopy(board):
+    boardCopy = []
+    for i in board:
+        boardCopy.append(i)
+    return boardCopy
+```
+As the AI algorithm prepares to make a move, it will sometimes need to make modifications to the temporary copy of the chessboard without altering the board. In such cases, we will call this function to make a copy of the list of `board`.
+
+The list stored in `boardCopy` is just an empty list. The `for` loop will iterate over the `board` parameter, adding a copy of the string values to the copy. After the `getBoardCopy()` function creates a copy of the actual chessboard, it returns a reference to this new board in `boardCopy`.
+# Check if the square on the chessboard is still available
+Cho một bàn cờ caro và một nước đi có thể có, hàm `isSpaceFree()` sẽ trả về liệu nước đi đó có thể thực thi được hay không:
+```
+def isSpaceFree(board, move):
+    #Trả về True nếu nước đi vẫn còn trên bàn cờ
+    return board[move] == ' '
+```
+
+# Allows the player to enter a move
+Hàm `getPlayerMove()` sẽ yêu cầu người chơi nhập số cho ô mà họ muốn di chuyển:
+def getPlayerMove(board):
+    move = ' '
+    while move not in '1 2 3 4 5 6 7 8 9'.split() or not isSpaceFree(board, int(move)):
+        print('What is your next move? (1-9)')
+        move = input()
+    return int(move)
