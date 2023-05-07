@@ -96,10 +96,141 @@ def isSpaceFree(board, move):
 ```
 
 # Allows the player to enter a move
-Hàm `getPlayerMove()` sẽ yêu cầu người chơi nhập số cho ô mà họ muốn di chuyển:
+The `getPlayerMove()` function will ask the player to enter the number for the cell they want to move:
+```
 def getPlayerMove(board):
-    move = ' '
-    while move not in '1 2 3 4 5 6 7 8 9'.split() or not isSpaceFree(board, int(move)):
-        print('What is your next move? (1-9)')
-        move = input()
-    return int(move)
+     move = ' '
+     while move not in '1 2 3 4 5 6 7 8 9'.split() or not isSpaceFree(board, int(move)):
+         print('What is your next move? (1-9)')
+         move = input()
+     return int(move)
+```
+The loop will ensure that execution will not continue until the player enters an integer between 1 and 9. It also ensures that the entered cell will not be used before, since the checkerboard is passed to function for the board parameter. The two lines of code inside the `while` loop ask the player to enter a number between 1 and 9.
+
+The expression on the left checks if the player's move is equal to '1', '2', '3',..'9' by creating a list with these strings (with the  method  `split()`) and check if the move is in this list. In this expression, '1 2 3 4 5 6 7 8 9'.split() would be [' 1', '2', '3', '4', '5', '6', '7' , '8', '9'].
+
+The expression on the right checks if the move entered by the player is a tile on the chessboard by calling `isSpaceFree()`. Note that the `isSpaceFree()` function returns `True` if the move is already on the chessboard.
+# Choose a move from the set of steps
+```
+def chooseRandomMoveFromList(board, movesList):
+     #Returns a valid move from the passed set
+     #Returns None if there are no valid moves
+     possibleMoves = []
+     for i in movesList:
+         if isSpaceFree(board, i):
+             possibleMoves.append(i)
+
+     if len(possibleMoves) != 0:
+         return random.choice(possibleMoves)
+     else:
+         return None
+```
+The `board` parameter is a list of character strings representing the checkerboard. The second parameter, `movesList`, is a list of integers of possible cells to select from. For example, if `movesList is [1, 3, 7, 9]`, it means that `selectRandomMoveFromList()` will return the integer that is one of the cells in the corners.
+
+However, `selectRandomMoveFromList()` will initially check if the cell is valid to continue. The `possibleMoves` list is initially an empty list. The `for` loop then iterates through the `movesList`. The moves that will cause the `isSpaceFree()` function to return `True` are added to `possibleMoves` by the `append()` function.
+
+The `possibleMoves` list contains all the moves already in the `movesList` and are the cells that can perform the moves in that place. The program will then check if the list is empty:
+```
+    if len(possibleMoves) != 0:
+        return random.choice(possibleMoves)
+    else:
+        return None
+```
+If the list is not empty, there is at least one possible move on the chessboard.
+
+This list may be empty. For example, if `movesList is [1, 3, 7, 9]` but the chessboard is represented by the parameter `board` with all corner tiles occupied, the list of `possibleMoves` will be []. In that case, `len(possibleMoves)` returns 0 and the function returns `None`.
+# Build tactics with Game AI
+The AI needs to be able to look at the chessboard and decide what kind of empty space it should move. For clarity, we'll label the three types of spaces on the checkerboard: corner, edge, and center.
+
+The AI's Tic-Tac-Toe strategy will follow a simple algorithm, which is a finite sequence of statements to calculate the outcome. A program can use several different algorithms. An algorithm can be represented by a graph. AI's algorithm will calculate the best move to make.
+
+The AI algorithm consists of the following steps:
+
+1..See if the computer can take any action to win the game. If so, the migration will be performed. If not, go to step 2.
+2.See if the player can take any action that causes the computer to lose. If yes, move there to block the player. If not, go to step 3.
+3.Check if there are any gaps in the corner (gaps 1, 3, 7 or 9). If yes, perform the migration there. If there is no gap in the corner, proceed to step 4.
+4.Check if the space in the middle is empty or not. If yes, move there. If not, perform step 5
+5.Move over any space on the sides (2, 4, 6 or 8 gaps). No more steps because side gaps are all that's left if execution reaches step 5
+# Generate AI code for computers
+```
+def getComputerMove(board, computerLetter):
+    if computerLetter == 'X':
+        playerLetter = 'O'
+    else:
+        playerLetter = 'X'
+```
+The first argument is board, which represents the chessboard. The second argument is the character the computer uses, which is 'X' or 'O' in the computerLetter parameter.
+
+The checkerboard AI algorithm works as follows:
+
+1.See if the computer can take any action to win the game. If so, take that action. If not, go to step 2.
+2.See if the player can take any action that causes the computer to lose the game. If it is, the computer will move there to block the player. If not, go to step 3.
+3.Check if any of the angles (cells 1, 3, 7 or 9) can be taken. If there are no cells, go to step 4.
+4.Check if the cell in the center is empty or not. If yes, perform the migration there. If not, go to step 5.
+5.Move on any edge (cell 2, 4, 6 or 8). There are no further steps, because the spaces next to it are the only cells left.
+The function will return an integer value from 1 to 9 representing the computer's steps.
+
+We will go through how to do the above steps.
+
+# Check if the computer can win in one move
+```
+    for i in range(1, 10):
+        boardCopy = getBoardCopy(board)
+        if isSpaceFree(boardCopy, i):
+            makeMove(boardCopy, computerLetter, i)
+            if isWinner(boardCopy, computerLetter):
+                return i
+```
+The for loop starts first going through each possible step 1 through 9. The code inside the loop simulates what would happen if the computer made that move.
+
+The first line in the loop will make a copy of the board list. This is a simulated move inside the loop and does not change the checkerboard stored in the board variable. The getBoardCopy() function returns an identical but distinct checkerboard list value.
+
+The first if condition checks if the cell has an empty child and if it does, it simulates a move on the copy. If this move is the winning move by the computer, the function returns the integer value of that move.
+
+Otherwise, the loop will end and program execution will continue.
+
+# Check if a player wins on a certain move
+```
+    for i in range(1, 10):
+        boardCopy = getBoardCopy(board)
+        if isSpaceFree(boardCopy, i):
+            makeMove(boardCopy, playerLetter, i)
+            if isWinner(boardCopy, playerLetter):
+                return i
+```
+If the isWinner() function indicates that the player will win on a certain move, the computer will return the move itself to prevent this from happening.
+
+If the player cannot win that move, the for loop ends.
+
+# Check the boxes in the corners, the center and the sides are empty
+If the computer cannot make a winning move and does not need to block the player's move, it will move to a corner, center or sides, depending on the space.
+
+The computer will first try to move to one of the gaps in the corner:
+```
+    move = chooseRandomMoveFromList(board, [1, 3, 7, 9])
+    if move != None:
+        return move
+```
+The selectRandomMoveFromList() function call with the list [1, 3, 7, 9] will ensure that the function returns an integer value for one of the spaces in the corners: 1, 3, 7, or 9.
+
+If all corner spaces are used, selectRandomMoveFromList() returns None
+```
+    if isSpaceFree(board, 5):
+        return 5
+```
+If there is no space left in the corners, it will take the move in tile 5 if it is empty.
+```
+return chooseRandomMoveFromList(board, [2, 4, 6, 8])
+```
+This code makes the call to selectRandomMoveFromList(), except that we pass it a list of spaces in adjacent cells: [2, 4, 6, 8]. This function will not return None because adjacent spaces are the only spaces that can be left.
+
+# Check if the chessboard is full or not
+```
+def isBoardFull(board):
+    #Trả về True nếu không còn các nước đi trên bàn cờ, nếu không trả về False
+    for i in range(1, 10):
+        if isSpaceFree(board, i):
+            return False
+    return True
+```
+
