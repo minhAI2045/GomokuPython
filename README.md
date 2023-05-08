@@ -146,10 +146,10 @@ The AI's Tic-Tac-Toe strategy will follow a simple algorithm, which is a finite 
 
 The AI algorithm consists of the following steps:
 
-1..See if the computer can take any action to win the game. If so, the migration will be performed. If not, go to step 2.
-2.See if the player can take any action that causes the computer to lose. If yes, move there to block the player. If not, go to step 3.
-3.Check if there are any gaps in the corner (gaps 1, 3, 7 or 9). If yes, perform the migration there. If there is no gap in the corner, proceed to step 4.
-4.Check if the space in the middle is empty or not. If yes, move there. If not, perform step 5
+1..See if the computer can take any action to win the game. If so, the migration will be performed. If not, go to step 2 
+2.See if the player can take any action that causes the computer to lose. If yes, move there to block the player. If not, go to step 3 
+3.Check if there are any gaps in the corner (gaps 1, 3, 7 or 9). If yes, perform the migration there. If there is no gap in the corner, proceed to step 4 
+4.Check if the space in the middle is empty or not. If yes, move there. If not, perform step 5 
 5.Move over any space on the sides (2, 4, 6 or 8 gaps). No more steps because side gaps are all that's left if execution reaches step 5
 # Generate AI code for computers
 ```
@@ -163,10 +163,10 @@ The first argument is board, which represents the chessboard. The second argumen
 
 The checkerboard AI algorithm works as follows:
 
-1.See if the computer can take any action to win the game. If so, take that action. If not, go to step 2.
-2.See if the player can take any action that causes the computer to lose the game. If it is, the computer will move there to block the player. If not, go to step 3.
-3.Check if any of the angles (cells 1, 3, 7 or 9) can be taken. If there are no cells, go to step 4.
-4.Check if the cell in the center is empty or not. If yes, perform the migration there. If not, go to step 5.
+1.See if the computer can take any action to win the game. If so, take that action. If not, go to step 2 
+2.See if the player can take any action that causes the computer to lose the game. If it is, the computer will move there to block the player. If not, go to step 3 
+3.Check if any of the angles (cells 1, 3, 7 or 9) can be taken. If there are no cells, go to step 4
+4. Check if the cell in the center is empty or not. If yes, perform the migration there. If not, go to step 5. 
 5.Move on any edge (cell 2, 4, 6 or 8). There are no further steps, because the spaces next to it are the only cells left.
 The function will return an integer value from 1 to 9 representing the computer's steps.
 
@@ -227,10 +227,78 @@ This code makes the call to selectRandomMoveFromList(), except that we pass it a
 # Check if the chessboard is full or not
 ```
 def isBoardFull(board):
-    #Trả về True nếu không còn các nước đi trên bàn cờ, nếu không trả về False
-    for i in range(1, 10):
-        if isSpaceFree(board, i):
-            return False
-    return True
+     # Returns True if there are no moves on the board, False otherwise
+     for i in range(1, 10):
+         if isSpaceFree(board, i):
+             return False
+     return True
 ```
+This function returns True if the list of 10 character strings in the board argument to which it is passed has an 'X' or 'O' in each index (except index 0 is omitted). The for loop allows us to check indices from 1 to 9 on the list of boards. As soon as it finds an empty space on the chessboard (i.e. when isSpaceFree(board, i) returns True), the isBoardFull() function returns False.
 
+If the loop ends, meaning that the chessboard has no empty cells, the function will return True.
+
+# Loop for the game
+The `inputPlayerLetter()` function allows the player to enter X or O values:
+```
+    playerLetter, computerLetter = inputPlayerLetter()
+```
+The function returns a list of two strings, ['X', 'O'] or ['O', 'X']. We will use multi-variable assignment to assign values to variables at the same time.
+
+The `whoGoesFirst()` function randomly decides who goes first, returning the string 'player' or 'computer':
+```
+    turn = whoGoesFirst()
+    print('The ' + turn + ' will go first.')
+    gameIsPlaying = True
+```
+The gameIsPlaying variable keeps track of whether the game is still being played or someone has won or drawn.
+## Thực hiện lượt của người chơi
+```
+    while gameIsPlaying:
+        if turn == 'player':
+            drawBoard(theBoard)
+            move = getPlayerMove(theBoard)
+            makeMove(theBoard, playerLetter, move)
+```
+The turn variable is initially set to "player" or "computer" by the whoGoesFirst() function. The theBoard variable is passed to the drawBoard() function to print the checkerboard on the screen. The getPlayerMove() function then allows the player to enter their move. The makeMove() function adds the player's X or O to the theBoard variable.
+
+After the player enters the move, the program checks if the player won or not:
+```
+            if isWinner(theBoard, playerLetter):
+                drawBoard(theBoard)
+                print('Hooray! You have won the game!')
+                gameIsPlaying = False
+```
+If a player doesn't win with their last move, it's possible that their move has filled the entire board. The program will check that condition followed by an else conditional:
+```
+            else:
+                if isBoardFull(theBoard):
+                    drawBoard(theBoard)
+                    print('The game is a tie!')
+                    break
+                else:
+                    turn = 'computer'
+```
+## Perform the machine's turn
+```
+        else:
+            move = getComputerMove(theBoard, computerLetter)
+            makeMove(theBoard, computerLetter, move)
+
+            if isWinner(theBoard, computerLetter):
+                drawBoard(theBoard)
+                print('The computer has beaten you! You lose.')
+                gameIsPlaying = False
+            else:
+                if isBoardFull(theBoard):
+                    drawBoard(theBoard)
+                    print('The game is a tie!')
+                    break
+                else:
+                    turn = 'player'
+```
+The computer's turn execution code is almost identical to the player's code. And the last piece of code is used to ask the user if they want to play again.
+```
+    print('Do you want to play again? (yes or no)')
+    if not input().lower().startswith('y'):
+        break
+```
