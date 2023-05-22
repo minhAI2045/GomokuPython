@@ -202,6 +202,7 @@ If the isWinner() function indicates that the player will win on a certain move,
 
 If the player cannot win that move, the for loop ends.
 
+
 # Check the boxes in the corners, the center and the sides are empty
 If the computer cannot make a winning move and does not need to block the player's move, it will move to a corner, center or sides, depending on the space.
 
@@ -251,7 +252,8 @@ The `whoGoesFirst()` function randomly decides who goes first, returning the str
     gameIsPlaying = True
 ```
 The gameIsPlaying variable keeps track of whether the game is still being played or someone has won or drawn.
-## Thực hiện lượt của người chơi
+
+## Take the player's turn
 ```
     while gameIsPlaying:
         if turn == 'player':
