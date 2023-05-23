@@ -151,6 +151,8 @@ The AI algorithm consists of the following steps:
 3.Check if there are any gaps in the corner (gaps 1, 3, 7 or 9). If yes, perform the migration there. If there is no gap in the corner, proceed to step 4 
 4.Check if the space in the middle is empty or not. If yes, move there. If not, perform step 5 
 5.Move over any space on the sides (2, 4, 6 or 8 gaps). No more steps because side gaps are all that's left if execution reaches step 5
+
+
 # Generate AI code for computers
 ```
 def getComputerMove(board, computerLetter):
@@ -189,6 +191,7 @@ The first if condition checks if the cell has an empty child and if it does, it 
 
 Otherwise, the loop will end and program execution will continue.
 
+
 # Check if a player wins on a certain move
 ```
     for i in range(1, 10):
@@ -225,6 +228,8 @@ return chooseRandomMoveFromList(board, [2, 4, 6, 8])
 ```
 This code makes the call to selectRandomMoveFromList(), except that we pass it a list of spaces in adjacent cells: [2, 4, 6, 8]. This function will not return None because adjacent spaces are the only spaces that can be left.
 
+
+
 # Check if the chessboard is full or not
 ```
 def isBoardFull(board):
@@ -237,6 +242,8 @@ def isBoardFull(board):
 This function returns True if the list of 10 character strings in the board argument to which it is passed has an 'X' or 'O' in each index (except index 0 is omitted). The for loop allows us to check indices from 1 to 9 on the list of boards. As soon as it finds an empty space on the chessboard (i.e. when isSpaceFree(board, i) returns True), the isBoardFull() function returns False.
 
 If the loop ends, meaning that the chessboard has no empty cells, the function will return True.
+
+
 
 # Loop for the game
 The `inputPlayerLetter()` function allows the player to enter X or O values:
@@ -252,6 +259,8 @@ The `whoGoesFirst()` function randomly decides who goes first, returning the str
     gameIsPlaying = True
 ```
 The gameIsPlaying variable keeps track of whether the game is still being played or someone has won or drawn.
+ 
+
 
 ## Take the player's turn
 ```
