@@ -151,8 +151,6 @@ The AI algorithm consists of the following steps:
 3.Check if there are any gaps in the corner (gaps 1, 3, 7 or 9). If yes, perform the migration there. If there is no gap in the corner, proceed to step 4 
 4.Check if the space in the middle is empty or not. If yes, move there. If not, perform step 5 
 5.Move over any space on the sides (2, 4, 6 or 8 gaps). No more steps because side gaps are all that's left if execution reaches step 5
-
-
 # Generate AI code for computers
 ```
 def getComputerMove(board, computerLetter):
@@ -173,7 +171,6 @@ The checkerboard AI algorithm works as follows:
 The function will return an integer value from 1 to 9 representing the computer's steps.
 
 We will go through how to do the above steps.
-
 # Check if the computer can win in one move
 ```
     for i in range(1, 10):
@@ -190,7 +187,6 @@ The first line in the loop will make a copy of the board list. This is a simulat
 The first if condition checks if the cell has an empty child and if it does, it simulates a move on the copy. If this move is the winning move by the computer, the function returns the integer value of that move.
 
 Otherwise, the loop will end and program execution will continue.
-
 
 # Check if a player wins on a certain move
 ```
@@ -230,6 +226,7 @@ This code makes the call to selectRandomMoveFromList(), except that we pass it a
 
 
 
+
 # Check if the chessboard is full or not
 ```
 def isBoardFull(board):
@@ -260,6 +257,7 @@ The `whoGoesFirst()` function randomly decides who goes first, returning the str
 ```
 The gameIsPlaying variable keeps track of whether the game is still being played or someone has won or drawn.
  
+
 
 
 ## Take the player's turn
