@@ -1,3 +1,4 @@
+
 # Chess board performance
 First, we'll have to figure out how to represent the muscle table as data stored in a variable. On paper, the XO checkerboard is drawn as a pair of horizontal lines and a pair of vertical lines. In this program, the checkerboard will be represented as a list of character strings. Each string of characters represents one of the nine spaces on the chessboard.
 
@@ -32,6 +33,7 @@ def inputPlayerLetter():
      else:
          return ['O', 'X']
 ```
+
 # Decide who goes first
 ```
 def whoGoesFirst():
@@ -54,7 +56,9 @@ board[move] = letter
 ```
 The above code seems to change one of the elements in the list `board` to the value stored in the variable `letter`. However, since this code is inside a function, the `board` parameter will be omitted when the function returns. So the change to `board` will also be dropped when the function returns?
 
-Absolutely not, because lists have special properties when we pass them as arguments to functions. We are passing a reference to the list, not the list itself. We will learn about the difference between a list and a reference to a list.
+Absolutely not, because lists have special properties when we pass them as arguments to functions. We are passing a reference to the list, not the list itself. We will learn about the difference between a list and a reference to a list. 
+
+
 # Check if the player wins or not
 ```
 def isWinner(bo, le):
