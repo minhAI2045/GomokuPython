@@ -1,3 +1,4 @@
+
 import random
  
 def drawBoard(board):
@@ -61,6 +62,7 @@ def getPlayerMove(board):
         move = input()
     return int(move)
  
+
 def chooseRandomMoveFromList(board, movesList):
     #Trả về một nước đi hợp lệ
     #Trả về None nếu không còn nước đi hợp lệ
