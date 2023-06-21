@@ -1,4 +1,3 @@
-
 # Chess board performance
 First, we'll have to figure out how to represent the muscle table as data stored in a variable. On paper, the XO checkerboard is drawn as a pair of horizontal lines and a pair of vertical lines. In this program, the checkerboard will be represented as a list of character strings. Each string of characters represents one of the nine spaces on the chessboard.
 
@@ -17,6 +16,7 @@ def drawBoard(board):
 The `drawBoard()` function will print the chessboard represented by the `board` parameter. Remember that the chessboard is represented as a list of 10 character strings, where the string at index 1 is the sign on the space 1 on the board. Strings at index 0 will be ignored. The game functions work by passing a list of 10 character strings that are chessboards.
 
 We need to make sure that the spaces are properly aligned in the strings, otherwise the chessboard will look skewed when printed on the screen.
+
 
 # Allows the player to choose O or X
 ```
@@ -59,6 +59,8 @@ The above code seems to change one of the elements in the list `board` to the va
 Absolutely not, because lists have special properties when we pass them as arguments to functions. We are passing a reference to the list, not the list itself. We will learn about the difference between a list and a reference to a list. 
 
 
+
+
 # Check if the player wins or not
 ```
 def isWinner(bo, le):
@@ -78,6 +80,8 @@ Tên `bo` và `le` là các từ viết tắt cho các tham số của `board` v
 Có tám cách có thể để giành chiến thắng tại Tic Tac-Toe: bạn có thể có một hàng ngang ở các hàng trên cùng, giữa hoặc dưới cùng hoặc các hàng chéo.
 
 Mỗi dòng của điều kiện sẽ kiểm tra xem ba ô cho một dòng nhất định có bằng với ký tự được cung cấp hay không (kết hợp với toán tử `and`). Ta thực hiện kết hợp mỗi dòng bằng cách sử dụng toán tử `or` để kiểm tra tám cách khác nhau. Điều này có nghĩa là chỉ có một trong tám cách sẽ có giá trị là True để chúng ta có thể nói rằng người chơi sở hữu `letter` trong `le` là người chiến thắng.
+
+
 
 # Copy Board's data
 The `getBoardCopy()` function allows to make a copy of a list containing 10 specified strings representing the checkerboard.
